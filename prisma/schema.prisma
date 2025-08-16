@@ -1,0 +1,130 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id            Int       @id @default(autoincrement())
+    name          String
+    password      String
+    phone         String?   @unique
+    phoneOtp      String?
+    email         String?   @unique
+    phoneVerified Boolean   @default(false)
+    emailVerified Boolean   @default(false)
+    courses       Course[]
+    tickets       Ticket[]
+    comments      Comment[]
+    payments      Payment[]
+    exams         Exam[]
+    surveys       Survey[]
+    createdAt     DateTime  @default(now())
+}
+
+model Article {
+    id          Int       @id @default(autoincrement())
+    title       String
+    enTitle     String    @unique
+    content     String    @db.Text
+    description String
+    comments    Comment[]
+    hero        String
+    createdAt   DateTime  @default(now())
+}
+
+model Course {
+    id          Int       @id @default(autoincrement())
+    title       String
+    enTitle     String    @unique
+    description String    @db.Text
+    price       Int
+    hero        String
+    Intro       String
+    users       User[]
+    comments    Comment[]
+    payments    Payment[]
+    episodes    Episode[]
+    time        String
+    seasons     Int
+    createdAt   DateTime  @default(now())
+}
+
+model Episode {
+    id          Int      @id @default(autoincrement())
+    title       String
+    videoUrl480 String
+    videoUrl720 String
+    description String
+    duration    Int // Duration in minutes
+    order       Int // Order of the episode within the course
+    course      Course   @relation(fields: [courseId], references: [id])
+    courseId    Int
+    updatedAt   DateTime @updatedAt
+    createdAt   DateTime @default(now())
+}
+
+model Payment {
+    id        Int      @id @default(autoincrement())
+    amount    Int
+    authority String   @unique
+    refId     Int?     @unique
+    status    String // Can be 'PENDING', 'SUCCESS', 'FAILED'
+    user      User     @relation(fields: [userId], references: [id])
+    userId    Int
+    course    Course   @relation(fields: [courseId], references: [id])
+    courseId  Int
+    updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now())
+}
+
+model Comment {
+    id        Int      @id @default(autoincrement())
+    content   String
+    approved  Boolean  @default(false)
+    user      User?    @relation(fields: [userId], references: [id])
+    userId    Int?
+    course    Course?  @relation(fields: [courseId], references: [id])
+    courseId  Int?
+    article   Article? @relation(fields: [articleId], references: [id])
+    articleId Int?
+    createdAt DateTime @default(now())
+}
+
+model Ticket {
+    id        Int       @id @default(autoincrement())
+    title     String
+    messages  Message[]
+    open      Boolean   @default(true)
+    user      User      @relation(fields: [userId], references: [id])
+    userId    Int
+    createdAt DateTime  @default(now())
+}
+
+model Message {
+    id        Int      @id @default(autoincrement())
+    content   String
+    isAdmin   Boolean  @default(false)
+    ticket    Ticket?  @relation(fields: [ticketId], references: [id])
+    ticketId  Int?
+    createdAt DateTime @default(now())
+}
+
+model Exam {
+    id        Int      @id @default(autoincrement())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    Int
+    scores    Int[]
+    createdAt DateTime @default(now())
+}
+
+model Survey {
+    id        Int      @id @default(autoincrement())
+    user      User     @relation(fields: [userId], references: [id])
+    userId    Int
+    answers   String[]
+    createdAt DateTime @default(now())
+}
