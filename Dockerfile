@@ -7,7 +7,6 @@ WORKDIR /app
 # کپی package.json و package-lock.json
 COPY package*.json ./
 
-RUN npm run db:push
 # نصب dependencies
 RUN npm install
 
