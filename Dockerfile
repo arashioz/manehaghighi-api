@@ -1,21 +1,25 @@
-FROM node:20
+FROM node:20-alpine
 
 WORKDIR /app
 
+# Copy package files
 COPY package*.json ./
 
-ENV DATABASE_URL=postgresql://root:k0CiVngA4qEOKEgAHQpRA8jX@taftan.liara.cloud:30396/postgres
+# Install dependencies
+RUN npm ci --only=production
 
-ENV JWT_SECRET=SECRET
-
-RUN npm install
-
+# Copy source code
 COPY . .
 
-RUN npm run db:push
+# Generate Prisma client
+RUN npx prisma generate
 
-RUN npm run build
-
+# Expose port
 EXPOSE 3000
 
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:3000/health || exit 1
+
+# Default command (will be overridden by docker-compose)
 CMD ["npm", "start"]

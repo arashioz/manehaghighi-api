@@ -26,6 +26,10 @@ app.use(
 app.get("/", (req, res) => {
     res.send("Hello, world!");
 });
+
+app.get("/health", (req, res) => {
+    res.status(200).json({ status: "OK", timestamp: new Date().toISOString() });
+});
 app.use("/auth", authRoutes);
 app.use("/article", articleRoutes);
 app.use("/course", courseRoutes);
