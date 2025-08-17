@@ -7,30 +7,28 @@ services:
     container_name: mane_haghighi_postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: mane_haghighi_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres123
-      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_DB: ${POSTGRES_DB:-mane_haghighi_db}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres123}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./prisma/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - app_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d mane_haghighi_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-mane_haghighi_db}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # Redis for caching (optional but recommended)
+  # Redis for caching
   redis:
     image: redis:7-alpine
     container_name: mane_haghighi_redis
     restart: unless-stopped
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT:-6379}:6379"
     volumes:
       - redis_data:/data
     networks:
@@ -49,13 +47,13 @@ services:
     container_name: mane_haghighi_app
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "${APP_PORT:-3000}:3000"
     environment:
-      NODE_ENV: development
-      DATABASE_URL: postgresql://postgres:postgres123@postgres:5432/mane_haghighi_db
+      NODE_ENV: ${NODE_ENV:-development}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres123}@postgres:5432/${POSTGRES_DB:-mane_haghighi_db}
       REDIS_URL: redis://redis:6379
-      PORT: 3000
-      JWT_SECRET: your-super-secret-jwt-key-change-this-in-production
+      PORT: ${APP_PORT:-3000}
+      JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-this-in-production}
     volumes:
       - .:/app
       - /app/node_modules
@@ -64,37 +62,19 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-      migration:
-        condition: service_completed_successfully
     networks:
       - app_network
-    command: npm run dev
+    command: sh -c "npm install && npx prisma generate && npx prisma db push --accept-data-loss && npm run dev"
 
-  # Migration Service (runs once before app starts)
-  migration:
-    image: node:18-alpine
-    container_name: mane_haghighi_migration
-    restart: "no"
-    environment:
-      DATABASE_URL: postgresql://postgres:postgres123@postgres:5432/mane_haghighi_db
-    volumes:
-      - .:/app
-    working_dir: /app
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - app_network
-    command: sh -c "npm install && npx prisma generate && npx prisma db push --accept-data-loss"
-
+  # Prisma Studio (Database GUI)
   prisma-studio:
     image: node:18-alpine
     container_name: mane_haghighi_prisma_studio
     restart: unless-stopped
     ports:
-      - "5555:5555"
+      - "${PRISMA_STUDIO_PORT:-5555}:5555"
     environment:
-      DATABASE_URL: postgresql://postgres:postgres123@postgres:5432/mane_haghighi_db
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres123}@postgres:5432/${POSTGRES_DB:-mane_haghighi_db}
     volumes:
       - .:/app
     working_dir: /app
@@ -103,7 +83,7 @@ services:
         condition: service_healthy
     networks:
       - app_network
-    command: npx prisma studio --hostname 0.0.0.0 --port 5555
+    command: sh -c "npm install && npx prisma generate && npx prisma studio --hostname 0.0.0.0 --port 5555"
 
 volumes:
   postgres_data:
