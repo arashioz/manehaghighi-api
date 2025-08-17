@@ -40,7 +40,17 @@ services:
         condition: service_healthy
     networks:
       - app_network
-    command: sh -c "npm run build && npx prisma migrate deploy && npm run db:push && npm start"
+    command: >
+      sh -c "
+      echo 'Building backend...' &&
+      npm run build &&
+      echo 'Running migrations...' &&
+      npx prisma migrate deploy &&
+      echo 'Pushing db schema...' &&
+      npm run db:push &&
+      echo 'Starting server...' &&
+      npm start
+      "
 
   prisma-studio:
     build:
@@ -56,11 +66,17 @@ services:
       - .:/app
     working_dir: /app
     depends_on:
-      postgres:
+      backend:
         condition: service_healthy
     networks:
       - app_network
-    command: sh -c "npx prisma generate && npx prisma studio --hostname 0.0.0.0 --port 5555"
+    command: >
+      sh -c "
+      echo 'Generating Prisma client...' &&
+      npx prisma generate &&
+      echo 'Starting Prisma Studio...' &&
+      npx prisma studio --hostname 0.0.0.0 --port 5555
+      "
 
 volumes:
   postgres_data:
