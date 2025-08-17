@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # دستور پیش‌فرض (می‌تونی با docker-compose override کنی)
-CMD ["npm", "start"]
+CMD sh -c "npx prisma migrate deploy && npx prisma db push --schema='./prisma/schema.prisma' && npm start"
