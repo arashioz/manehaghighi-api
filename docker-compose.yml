@@ -45,7 +45,9 @@ services:
     command: sh -c "npx prisma migrate deploy && npm start"
 
   prisma-studio:
-    image: node:18-alpine
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: mane_haghighi_prisma_studio
     restart: unless-stopped
     ports:

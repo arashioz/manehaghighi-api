@@ -1,19 +1,21 @@
-FROM node:20-alpine
+# استفاده از Node با Debian برای OpenSSL درست
+FROM node:18-bullseye
 
+# ایجاد مسیر اپ
 WORKDIR /app
 
-# Copy package files
+# کپی package.json و package-lock.json
 COPY package*.json ./
 
-# Copy source code
+RUN npm run db:push
+# نصب dependencies
+RUN npm install
+
+# کپی بقیه پروژه
 COPY . .
 
-# Expose port
+# اکسپوز پورت بک‌اند
 EXPOSE 3000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3000/health || exit 1
-
-# Default command (will be overridden by docker-compose)
+# دستور پیش‌فرض (می‌تونی با docker-compose override کنی)
 CMD ["npm", "start"]
