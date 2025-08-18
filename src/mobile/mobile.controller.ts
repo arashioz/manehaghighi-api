@@ -9,12 +9,12 @@ export const getHomeSlider = async (req: Request, res: Response) => {
             {
                 id: 1,
                 title: "سفر به اعماق درون",
-                image: "https://mane-haghighi-bucket.storage.c2.liara.space/assets/course-introcution/A%20Journey%20into%20Deep%20Self%20Moarefi%20Dore%20Site.jpg",
+                image: "/static/assets/course-introcution/A Journey into Deep Self Moarefi Dore Site.jpg",
             },
             {
                 id: 2,
                 title: "سفر به ناخودآگاه",
-                image: "https://mane-haghighi-bucket.storage.c2.liara.space/assets/course-introcution/A%20Journey%20into%20Unconscious%20Mind%20Moarefi%20Dore%20Site.jpg",
+                image: "/static/assets/course-introcution/A Journey into Unconscious Mind Moarefi Dore Site.jpg",
             },
         ]);
     } catch (error) {
@@ -56,12 +56,12 @@ export const getPodcasts = async (req: Request, res: Response) => {
             {
                 id: 1,
                 title: "پادکست 1",
-                url: "https://mane-haghighi-bucket.storage.c2.liara.space/assets/podcast.mp3",
+                url: "/static/assets/podcast.mp3",
             },
             {
                 id: 2,
                 title: "پادکست 2",
-                url: "https://mane-haghighi-bucket.storage.c2.liara.space/assets/podcast.mp3",
+                url: "/static/assets/podcast.mp3",
             },
         ]);
     } catch (error) {
@@ -75,12 +75,12 @@ export const getLives = async (req: Request, res: Response) => {
             {
                 id: 1,
                 title: "لایو 1",
-                url: "https://mane-haghighi-bucket.storage.c2.liara.space/assets/live.mp4",
+                url: "/static/assets/live.mp4",
             },
             {
                 id: 2,
                 title: "لایو 2",
-                url: "https://mane-haghighi-bucket.storage.c2.liara.space/assets/live.mp4",
+                url: "/static/assets/live.mp4",
             },
         ]);
     } catch (error) {

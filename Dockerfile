@@ -10,7 +10,13 @@ RUN npm install
 
 COPY . .
 
+# کپی کردن فایل‌های استاتیک قبل از build
+RUN mkdir -p src/static
+
 RUN npm run build
+
+# اطمینان از وجود فایل‌های استاتیک در dist
+RUN ls -la dist/static/assets/
 
 EXPOSE 3000
 

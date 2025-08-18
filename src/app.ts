@@ -13,10 +13,12 @@ import examRoutes from "./exam/exam.routes";
 import surveyRoutes from "./survey/survey.routes";
 import mobileRoutes from "./mobile/mobile.routes";
 import cors from "cors";
+import path from "path";
 
 const app = express();
 
 app.use(cors());
+app.use("/static", express.static(path.join(__dirname, "static")));
 app.use(
     express.json({
         limit: "50mb",

@@ -5,7 +5,9 @@
     "scripts": {
         "start": "node dist/server.js",
         "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-        "build": "tsc",
+        "build": "tsc && npm run copy-static",
+        "copy-static": "cp -r src/static dist/",
+        "copy-static:win": "xcopy src\\static dist\\static /E /I",
         "db:push": "prisma db push --schema='./prisma/schema.prisma'",
         "seed": "ts-node prisma/seed.ts",
         "delete": "ts-node prisma/delete.ts"

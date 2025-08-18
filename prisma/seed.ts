@@ -44,7 +44,7 @@ async function main() {
             content:
                 "برنامه‌نویسی وب یکی از مهم‌ترین مهارت‌های دنیای فناوری امروز است. در این مقاله، ما به بررسی اصول اولیه HTML، CSS و JavaScript می‌پردازیم...",
             description: "آشنایی با اصول اولیه برنامه‌نویسی وب",
-            hero: "https://mane-haghighi-bucket.storage.c2.liara.space/assets/course.jpg",
+            hero: "/static/assets/course.jpg",
         },
     });
 
@@ -56,8 +56,8 @@ async function main() {
             description:
                 "در این دوره، شما با مفاهیم پیشرفته ری‌اکت آشنا خواهید شد و یاد می‌گیرید چگونه اپلیکیشن‌های وب مدرن و کارآمد بسازید.",
             price: 1500000, // 1,500,000 Rials
-            hero: "https://mane-haghighi-bucket.storage.c2.liara.space/assets/course.jpg",
-            Intro: "https://mane-haghighi-bucket.storage.c2.liara.space/assets/632dbfc30779e378da8cb8913870875661214635-480p.mp4",
+            hero: "/static/assets/course.jpg",
+            Intro: "/static/assets/632dbfc30779e378da8cb8913870875661214635-480p.mp4",
             time: "۲۰ ساعت",
             seasons: 4,
             users: {
@@ -72,7 +72,7 @@ async function main() {
             {
                 title: "معرفی هوک‌های ری‌اکت",
                 videoUrl:
-                    "https://mane-haghighi-bucket.storage.c2.liara.space/assets/632dbfc30779e378da8cb8913870875661214635-480p.mp4",
+                    "/static/assets/632dbfc30779e378da8cb8913870875661214635-480p.mp4",
                 duration: 45,
                 description: "در این قسمت با هوک‌های ری‌اکت آشنا می‌شویم.",
                 order: 1,
@@ -81,7 +81,7 @@ async function main() {
             {
                 title: "مدیریت حالت پیشرفته",
                 videoUrl:
-                    "https://mane-haghighi-bucket.storage.c2.liara.space/assets/632dbfc30779e378da8cb8913870875661214635-480p.mp4",
+                    "/static/assets/632dbfc30779e378da8cb8913870875661214635-480p.mp4",
                 duration: 60,
                 description: "در این قسمت با مدیریت حالت پیشرفته آشنا می‌شویم.",
                 order: 2,
