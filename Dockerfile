@@ -20,4 +20,4 @@ RUN ls -la dist/static/assets/
 
 EXPOSE 3000
 
-CMD sh -c "npx prisma migrate deploy && npm start"
+CMD sh -c "npx prisma migrate deploy && npm run db:push && npm start"

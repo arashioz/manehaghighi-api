@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Course } from "@prisma/client";
 import { CreateTicketInput } from "./user.types";
 
 const prisma = new PrismaClient();
@@ -23,7 +23,7 @@ export const meHaveCourse = async (
         }
 
         const haveCourse = user.courses.some(
-            (course) => course.id === Number(courseId),
+            (course: Course) => course.id === Number(courseId),
         );
         res.json({ haveCourse });
     } catch (error) {
