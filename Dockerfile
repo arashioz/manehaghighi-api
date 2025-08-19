@@ -3,12 +3,15 @@ FROM node:20-alpine
 WORKDIR /app
 
 # نصب openssl و bash برای Prisma
-RUN apk add --no-cache openssl bash
+RUN apk add --no-cache openssl bash libc6-compat
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci --no-audit --no-fund
 
 COPY . .
+
+# Ensure Prisma Client is generated in the image
+RUN npx prisma generate
 
 # کپی کردن فایل‌های استاتیک قبل از build
 RUN mkdir -p src/static

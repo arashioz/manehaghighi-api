@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PrismaClient, Course } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -16,7 +16,7 @@ export const getEpisodes = async (req: Request, res: Response) => {
         });
         if (
             !user?.courses
-                .map((course: Course) => course.id)
+                .map((course: { id: number }) => course.id)
                 .includes(Number(courseId))
         ) {
             return res

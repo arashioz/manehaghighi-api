@@ -144,7 +144,7 @@ export const addCoursesForUser = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const { courseIds }: AddCourseForUserInput = req.body;
-        const courses = courseIds.map((id) => ({ id }));
+        const courses = courseIds.map((id: number) => ({ id }));
         await prisma.user.update({
             where: { id: Number(id) },
             data: { courses: { connect: courses } },
@@ -253,7 +253,7 @@ export const addUsersForCourse = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const { userIds }: AddUserForCourseInput = req.body;
-        const users = userIds.map((id) => ({ id }));
+        const users = userIds.map((id: number) => ({ id }));
         await prisma.course.update({
             where: { id: Number(id) },
             data: { users: { connect: users } },
